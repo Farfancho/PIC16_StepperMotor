@@ -1381,9 +1381,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 "30995
 [; ;/opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h: 30995: __asm("TOSH equ 01FEFh");
 [; <" TOSH equ 01FEFh ;# ">
-"64 mcc_generated_files/nco1.h
-[; ;mcc_generated_files/nco1.h: 64: int32_t position_steps;
-[v _position_steps `l ~T0 @X0 1 e ]
 "64 mcc_generated_files/nco1.c
 [; ;mcc_generated_files/nco1.c: 64: void NCO1_Initialize (void)
 [v _NCO1_Initialize `(v ~T0 @X0 1 ef ]
@@ -1425,9 +1422,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 "90
 [; ;mcc_generated_files/nco1.c: 90:     PIE7bits.NCO1IE = 1;
 [e = . . _PIE7bits 0 3 -> -> 1 `i `uc ]
-"92
-[; ;mcc_generated_files/nco1.c: 92:     position_steps = 0;
-[e = _position_steps -> -> 0 `i `l ]
 "93
 [; ;mcc_generated_files/nco1.c: 93: }
 [e :UE 1455 ]
@@ -1517,35 +1511,47 @@ Version 4.0 HI-TECH Software Intermediate Code
 [e :UE 1459 ]
 }
 "127
-[; ;mcc_generated_files/nco1.c: 127: void ToggleStatus(void)
-[v _ToggleStatus `(v ~T0 @X0 1 ef ]
+[; ;mcc_generated_files/nco1.c: 127: void EnStatus(void)
+[v _EnStatus `(v ~T0 @X0 1 ef ]
 "128
 [; ;mcc_generated_files/nco1.c: 128: {
 {
-[e :U _ToggleStatus ]
+[e :U _EnStatus ]
 [f ]
 "129
-[; ;mcc_generated_files/nco1.c: 129:     NCO1CONbits.EN = !NCO1CONbits.EN;
-[e = . . _NCO1CONbits 0 5 -> -> ! != -> . . _NCO1CONbits 0 5 `i -> 0 `i `i `uc ]
+[; ;mcc_generated_files/nco1.c: 129:     NCO1CONbits.EN = 1;
+[e = . . _NCO1CONbits 0 5 -> -> 1 `i `uc ]
 "130
 [; ;mcc_generated_files/nco1.c: 130: }
 [e :UE 1460 ]
 }
 "132
-[; ;mcc_generated_files/nco1.c: 132: void NCO1_ISR(void)
-[v _NCO1_ISR `(v ~T0 @X0 1 ef ]
+[; ;mcc_generated_files/nco1.c: 132: void DisStatus(void)
+[v _DisStatus `(v ~T0 @X0 1 ef ]
 "133
 [; ;mcc_generated_files/nco1.c: 133: {
 {
+[e :U _DisStatus ]
+[f ]
+"134
+[; ;mcc_generated_files/nco1.c: 134:     NCO1CONbits.EN = 0;
+[e = . . _NCO1CONbits 0 5 -> -> 0 `i `uc ]
+"135
+[; ;mcc_generated_files/nco1.c: 135: }
+[e :UE 1461 ]
+}
+"137
+[; ;mcc_generated_files/nco1.c: 137: void NCO1_ISR(void)
+[v _NCO1_ISR `(v ~T0 @X0 1 ef ]
+"138
+[; ;mcc_generated_files/nco1.c: 138: {
+{
 [e :U _NCO1_ISR ]
 [f ]
-"135
-[; ;mcc_generated_files/nco1.c: 135:     PIR7bits.NCO1IF = 0;
+"140
+[; ;mcc_generated_files/nco1.c: 140:     PIR7bits.NCO1IF = 0;
 [e = . . _PIR7bits 0 3 -> -> 0 `i `uc ]
-"137
-[; ;mcc_generated_files/nco1.c: 137:     position_steps ++;
-[e ++ _position_steps -> -> 1 `i `l ]
-"138
-[; ;mcc_generated_files/nco1.c: 138: }
-[e :UE 1461 ]
+"144
+[; ;mcc_generated_files/nco1.c: 144: }
+[e :UE 1462 ]
 }

@@ -22,40 +22,34 @@ typedef enum{
 
 typedef struct
 {
-    int32_t position_steps; //nco
-    int32_t target_steps; //0
-    uint32_t step_rate_hz; //nco
-    motor_dir_t direction; //0
-    bool moving; //nco
+    int32_t position_steps; 
+    volatile int32_t absolute_position;
+    volatile int32_t target; 
+    uint32_t step_rate_hz; 
+    motor_dir_t direction; 
+    volatile bool moving; 
     movement_type_t movement_type;
 }motor_status_t;
 
-void MotorInit(motor_status_t *motor, int32_t position_steps, int32_t target_steps, uint32_t step_rate_hz, motor_dir_t direction, bool moving, movement_type_t movement_type);
+void MotorInit(motor_status_t *motor, int32_t position_steps, int32_t absolute_position, int32_t target_steps, uint32_t step_rate_hz, motor_dir_t direction, bool moving, movement_type_t movement_type);
 
-void MotorStart(void);
+void MotorSetMoving(motor_status_t *motor, bool moving);
 
 bool MotorIsMoving(motor_status_t *motor);
 
 void MotorSetDirection(motor_status_t *motor, motor_dir_t direction);
 
-bool Motor_SetStepRateHz(uint32_t step_rate_hz);
- //Configura la frecuencia del nco.
- //hz a #del nco
- //si falla retorna falso.
+void Motor_SetStepRateHz(motor_status_t *motor, uint32_t freq);
 
-void MotorMoveToSteps(int32_t target_steps);
+void MotorMoveToSteps(motor_status_t *motor);
 
-void MotorMoveRelativeSteps(int32_t delta_steps);
+void MotorStepISR(motor_status_t *motor);
 
-void MotorSetCurrentPositionSteps(int32_t position_steps);
-//asigna el cero
+int32_t MotorGetPositionSteps(motor_status_t *motor);
 
-int32_t MotorGetPositionSteps(void);
-//leer posicion actual
+int32_t MotorGetTargetSteps(motor_status_t *motor);
 
-int32_t MotorGetTargetSteps(void);
-
-void MotorGetStatus(motor_status_t *status);
+void MotorSetTarget(motor_status_t *motor, int32_t target);
 
 void MotorTask(void);
 

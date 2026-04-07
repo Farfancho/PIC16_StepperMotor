@@ -17548,46 +17548,48 @@ typedef enum{
 typedef struct
 {
     int32_t position_steps;
-    int32_t target_steps;
+    volatile int32_t absolute_position;
+    volatile int32_t target;
     uint32_t step_rate_hz;
     motor_dir_t direction;
-    _Bool moving;
+    volatile _Bool moving;
     movement_type_t movement_type;
 }motor_status_t;
 
-void MotorInit(motor_status_t *motor, int32_t position_steps, int32_t target_steps, uint32_t step_rate_hz, motor_dir_t direction, _Bool moving, movement_type_t movement_type);
+void MotorInit(motor_status_t *motor, int32_t position_steps, int32_t absolute_position, int32_t target_steps, uint32_t step_rate_hz, motor_dir_t direction, _Bool moving, movement_type_t movement_type);
 
-void MotorStart(void);
+void MotorSetMoving(motor_status_t *motor, _Bool moving);
 
 _Bool MotorIsMoving(motor_status_t *motor);
 
 void MotorSetDirection(motor_status_t *motor, motor_dir_t direction);
 
-_Bool Motor_SetStepRateHz(uint32_t step_rate_hz);
+void Motor_SetStepRateHz(motor_status_t *motor, uint32_t freq);
 
+void MotorMoveToSteps(motor_status_t *motor);
 
+void MotorStepISR(motor_status_t *motor);
 
+int32_t MotorGetPositionSteps(motor_status_t *motor);
 
-void MotorMoveToSteps(int32_t target_steps);
+int32_t MotorGetTargetSteps(motor_status_t *motor);
 
-void MotorMoveRelativeSteps(int32_t delta_steps);
-
-void MotorSetCurrentPositionSteps(int32_t position_steps);
-
-
-int32_t MotorGetPositionSteps(void);
-
-
-int32_t MotorGetTargetSteps(void);
-
-void MotorGetStatus(motor_status_t *status);
+void MotorSetTarget(motor_status_t *motor, int32_t target);
 
 void MotorTask(void);
 # 4 "mcc_generated_files/motor.c" 2
 
-void MotorInit(motor_status_t *motor, int32_t position_steps, int32_t target_steps, uint32_t step_rate_hz, motor_dir_t direction, _Bool moving, movement_type_t movement_type){
+void MotorInit(motor_status_t *motor,
+        int32_t position_steps,
+        int32_t absolute_position,
+        int32_t target_steps,
+        uint32_t step_rate_hz,
+        motor_dir_t direction,
+        _Bool moving,
+        movement_type_t movement_type){
     motor -> position_steps = position_steps;
-    motor -> target_steps = target_steps;
+    motor -> absolute_position = absolute_position;
+    motor -> target = target_steps;
     motor -> step_rate_hz = step_rate_hz;
     motor -> direction = direction;
     motor -> moving = moving;
@@ -17604,6 +17606,77 @@ _Bool MotorIsMoving(motor_status_t *motor){
 }
 
 void MotorSetDirection(motor_status_t *motor, motor_dir_t direction){
-    LATCbits.LATC1 = direction;
+    LATCbits.LATC1 = (direction == MOTOR_DIR_CCW) ? 1u : 0u;
     motor -> direction = direction;
+}
+
+void Motor_SetStepRateHz(motor_status_t *motor, uint32_t freq){
+    SetFrequency(freq);
+    motor->step_rate_hz = freq;
+}
+# 53 "mcc_generated_files/motor.c"
+void MotorMoveToSteps(motor_status_t *motor){
+    int32_t deltaSteps;
+    deltaSteps = motor->target - motor->absolute_position;
+    if (deltaSteps > 0)
+    {
+        MotorSetDirection(motor, MOTOR_DIR_CW);
+        EnStatus();
+        motor->moving = 1;
+    }
+    else if (deltaSteps < 0)
+    {
+        MotorSetDirection(motor, MOTOR_DIR_CCW);
+        EnStatus();
+        motor->moving = 1;
+    }
+    else
+    {
+        DisStatus();
+        motor->moving = 0;
+    }
+}
+
+void MotorStepISR(motor_status_t *motor){
+    if (motor == ((void*)0)) return;
+    if (!motor->moving) return;
+
+    if (motor->direction == MOTOR_DIR_CW)
+    {
+        motor->absolute_position++;
+    }
+    else
+    {
+        motor->absolute_position--;
+    }
+
+
+    if (motor->absolute_position == motor->target)
+    {
+        DisStatus();
+        MotorSetMoving(motor, 0);
+    }
+}
+
+int32_t MotorGetPositionSteps(motor_status_t *motor){
+    return motor->absolute_position;
+}
+
+int32_t MotorGetTargetSteps(motor_status_t *motor){
+    return motor->target;
+}
+
+
+
+
+void MotorSetTarget(motor_status_t *motor, int32_t target){
+    if (motor->movement_type == MV_ABSOLUTE)
+    {
+        motor->target = target;
+    }
+    else
+    {
+        motor->target = motor->absolute_position + target;
+    }
+
 }

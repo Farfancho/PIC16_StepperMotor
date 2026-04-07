@@ -38,8 +38,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "19677
 [; ;/opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h: 19677: extern volatile PIR7bits_t PIR7bits __attribute__((address(0x713)));
 [v _PIR7bits `VS921 ~T0 @X0 0 e@1811 ]
-"112 mcc_generated_files/nco1.h
-[; ;mcc_generated_files/nco1.h: 112: void NCO1_ISR(void);
+"120 mcc_generated_files/nco1.h
+[; ;mcc_generated_files/nco1.h: 120: void NCO1_ISR(void);
 [v _NCO1_ISR `(v ~T0 @X0 0 ef ]
 "19845 /opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h
 [; ;/opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h: 19845:     struct {
@@ -63,14 +63,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 "19483
 [; ;/opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h: 19483: extern volatile PIR3bits_t PIR3bits __attribute__((address(0x70F)));
 [v _PIR3bits `VS913 ~T0 @X0 0 e@1807 ]
-[v F10892 `(v ~T0 @X0 0 tf ]
+[v F10897 `(v ~T0 @X0 0 tf ]
 "95 mcc_generated_files/eusart1.h
 [; ;mcc_generated_files/eusart1.h: 95: extern void (*EUSART1_TxDefaultInterruptHandler)(void);
-[v _EUSART1_TxDefaultInterruptHandler `*F10892 ~T0 @X0 0 e ]
-[v F10894 `(v ~T0 @X0 0 tf ]
+[v _EUSART1_TxDefaultInterruptHandler `*F10897 ~T0 @X0 0 e ]
+[v F10899 `(v ~T0 @X0 0 tf ]
 "96
 [; ;mcc_generated_files/eusart1.h: 96: extern void (*EUSART1_RxDefaultInterruptHandler)(void);
-[v _EUSART1_RxDefaultInterruptHandler `*F10894 ~T0 @X0 0 e ]
+[v _EUSART1_RxDefaultInterruptHandler `*F10899 ~T0 @X0 0 e ]
 "19895 /opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h
 [; ;/opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h: 19895:     struct {
 [s S934 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -1413,9 +1413,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 "30995
 [; ;/opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h: 30995: __asm("TOSH equ 01FEFh");
 [; <" TOSH equ 01FEFh ;# ">
-"64 mcc_generated_files/nco1.h
-[; ;mcc_generated_files/nco1.h: 64: int32_t position_steps;
-[v _position_steps `l ~T0 @X0 1 e ]
 [v $root$_INTERRUPT_InterruptManager `(v ~T0 @X0 0 e ]
 "52 mcc_generated_files/interrupt_manager.c
 [; ;mcc_generated_files/interrupt_manager.c: 52: void __attribute__((picinterrupt(("")))) INTERRUPT_InterruptManager (void)

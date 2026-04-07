@@ -57,7 +57,7 @@ void SYSTEM_Initialize(void)
     EUSART1_Initialize();
     motor_status_t motor;
     //int32_t position_steps;
-    MotorInit(&motor, position_steps, 0, 1007, MOTOR_DIR_CW, 0, MV_ABSOLUTE);
+    //MotorInit(&motor, position_steps, 0, 1007, MOTOR_DIR_CW, 0, MV_ABSOLUTE);
 }
 
 void OSCILLATOR_Initialize(void)

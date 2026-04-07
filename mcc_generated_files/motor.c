@@ -2,9 +2,17 @@
 
 #include "motor.h"
 
-void MotorInit(motor_status_t *motor, int32_t position_steps, int32_t target_steps, uint32_t step_rate_hz, motor_dir_t direction, bool moving, movement_type_t movement_type){
-    motor -> position_steps = position_steps;
-    motor -> target_steps = target_steps;
+void MotorInit(motor_status_t *motor,
+        int32_t position_steps, 
+        int32_t absolute_position, 
+        int32_t target_steps, 
+        uint32_t step_rate_hz, 
+        motor_dir_t direction, 
+        bool moving, 
+        movement_type_t movement_type){
+    motor -> position_steps = position_steps; //creo que no se usa (puede que lo elimine)
+    motor -> absolute_position = absolute_position;
+    motor -> target = target_steps;
     motor -> step_rate_hz = step_rate_hz;
     motor -> direction = direction;
     motor -> moving = moving;           
@@ -21,6 +29,89 @@ bool MotorIsMoving(motor_status_t *motor){
 }
 
 void MotorSetDirection(motor_status_t *motor, motor_dir_t direction){
-    LATCbits.LATC1 = direction;
+    LATCbits.LATC1 = (direction == MOTOR_DIR_CCW) ? 1u : 0u; //esto deja que explicitamente se pueda asignar 0 o 1 a la direccion, aunque sea un enum
     motor -> direction = direction;
+}
+
+void Motor_SetStepRateHz(motor_status_t *motor, uint32_t freq){
+    SetFrequency(freq);
+    motor->step_rate_hz = freq;
+}
+/*
+ * es posible que no se necesite esta funcion dado que tengo MotorSetTarget
+void MotorMoveRelativeSteps(motor_status_t *motor){
+    if (motor->position_steps != motor->target_steps){
+        EnStatus();
+        motor->moving = true;
+    }else{
+        DisStatus();
+        motor->moving = false;
+    }
+}
+*/
+
+void MotorMoveToSteps(motor_status_t *motor){
+    int32_t deltaSteps;
+    deltaSteps = motor->target - motor->absolute_position;
+    if (deltaSteps > 0)
+    {
+        MotorSetDirection(motor, MOTOR_DIR_CW);
+        EnStatus();
+        motor->moving = true;
+    }
+    else if (deltaSteps < 0)
+    {
+        MotorSetDirection(motor, MOTOR_DIR_CCW);
+        EnStatus();
+        motor->moving = true;
+    }
+    else
+    {
+        DisStatus();
+        motor->moving = false;
+    }    
+}
+
+void MotorStepISR(motor_status_t *motor){
+    if (motor == NULL) return;
+    if (!motor->moving) return;
+
+    if (motor->direction == MOTOR_DIR_CW)
+    {
+        motor->absolute_position++;
+    }
+    else
+    {
+        motor->absolute_position--;
+    }
+    
+    //para el motor en caso de haber alcanzado el target
+    if (motor->absolute_position == motor->target)
+    {
+        DisStatus();
+        MotorSetMoving(motor, false);
+    }
+}
+
+int32_t MotorGetPositionSteps(motor_status_t *motor){
+    return motor->absolute_position;
+}
+
+int32_t MotorGetTargetSteps(motor_status_t *motor){
+    return motor->target;
+}
+
+//necesito una funcion para asignar el target, si es absoluto, ponerlo directamente, y si es reativo sumarlo a la posicion absoluta.
+//lo que hago es convertirlo siempre a absoluto (dado que guarda el cero y evita hacer mas funciones repetidas)
+
+void MotorSetTarget(motor_status_t *motor, int32_t target){
+    if (motor->movement_type == MV_ABSOLUTE)
+    {
+        motor->target = target;
+    }
+    else
+    {
+        motor->target = motor->absolute_position + target;
+    }
+    
 }

@@ -89,7 +89,7 @@ void NCO1_Initialize (void)
     // Enabling NCO1 interrupt.
     PIE7bits.NCO1IE = 1;
     
-    position_steps = 0; 
+    //position_steps = 0; 
 }
 
 
@@ -124,9 +124,14 @@ bool GetStatus()
     return (NCO1CONbits.EN == 0) ? false : true;
 }
 
-void ToggleStatus(void)
+void EnStatus(void)
 {
-    NCO1CONbits.EN = !NCO1CONbits.EN;
+    NCO1CONbits.EN = 1;
+}
+
+void DisStatus(void)
+{
+    NCO1CONbits.EN = 0;
 }
 
 void NCO1_ISR(void)
@@ -134,7 +139,8 @@ void NCO1_ISR(void)
     // Clear the NCO1 interrupt flag
     PIR7bits.NCO1IF = 0;
     
-    position_steps ++;
+    //position_steps ++;
+    //MotorStepISR(&motor);
 }
 /**
  End of File

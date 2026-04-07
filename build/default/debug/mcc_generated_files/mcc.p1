@@ -8,8 +8,8 @@ Version 4.0 HI-TECH Software Intermediate Code
 "89 mcc_generated_files/mcc.h
 [; ;mcc_generated_files/mcc.h: 89: void OSCILLATOR_Initialize(void);
 [v _OSCILLATOR_Initialize `(v ~T0 @X0 0 ef ]
-"96 mcc_generated_files/nco1.h
-[; ;mcc_generated_files/nco1.h: 96: void NCO1_Initialize(void);
+"93 mcc_generated_files/nco1.h
+[; ;mcc_generated_files/nco1.h: 93: void NCO1_Initialize(void);
 [v _NCO1_Initialize `(v ~T0 @X0 0 ef ]
 "100 mcc_generated_files/tmr1.h
 [; ;mcc_generated_files/tmr1.h: 100: void TMR1_Initialize(void);
@@ -19,17 +19,14 @@ Version 4.0 HI-TECH Software Intermediate Code
 [v _EUSART1_Initialize `(v ~T0 @X0 0 ef ]
 "58 mcc_generated_files/mcc.c
 [; ;mcc_generated_files/mcc.c: 58:     motor_status_t motor;
-[c E10938 0 1 .. ]
-[n E10938 . MOTOR_DIR_CW MOTOR_DIR_CCW  ]
-[c E10942 0 1 .. ]
-[n E10942 . MV_ABSOLUTE MV_Relative  ]
+[c E10943 0 1 .. ]
+[n E10943 . MOTOR_DIR_CW MOTOR_DIR_CCW  ]
+[c E10947 0 1 .. ]
+[n E10947 . MV_ABSOLUTE MV_Relative  ]
 "24 mcc_generated_files/motor.h
 [; ;mcc_generated_files/motor.h: 24: {
-[s S1459 `l 1 `l 1 `ul 1 `E10938 1 `a 1 `E10942 1 ]
-[n S1459 . position_steps target_steps step_rate_hz direction moving movement_type ]
-"33
-[; ;mcc_generated_files/motor.h: 33: void MotorInit(motor_status_t *motor, int32_t position_steps, int32_t target_steps, uint32_t step_rate_hz, motor_dir_t direction, _Bool moving, movement_type_t movement_type);
-[v _MotorInit `(v ~T0 @X0 0 ef7`*S1459`l`l`ul`E10938`a`E10942 ]
+[s S1459 `l 1 `Vl 1 `Vl 1 `ul 1 `E10943 1 `Va 1 `E10947 1 ]
+[n S1459 . position_steps absolute_position target step_rate_hz direction moving movement_type ]
 "21465 /opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h
 [; ;/opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h: 21465: extern volatile unsigned char OSCCON1 __attribute__((address(0x88D)));
 [v _OSCCON1 `Vuc ~T0 @X0 0 e@2189 ]
@@ -1386,9 +1383,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 "30995
 [; ;/opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h: 30995: __asm("TOSH equ 01FEFh");
 [; <" TOSH equ 01FEFh ;# ">
-"64 mcc_generated_files/nco1.h
-[; ;mcc_generated_files/nco1.h: 64: int32_t position_steps;
-[v _position_steps `l ~T0 @X0 1 e ]
 "50 mcc_generated_files/mcc.c
 [; ;mcc_generated_files/mcc.c: 50: void SYSTEM_Initialize(void)
 [v _SYSTEM_Initialize `(v ~T0 @X0 1 ef ]
@@ -1418,9 +1412,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 "58
 [; ;mcc_generated_files/mcc.c: 58:     motor_status_t motor;
 [v _motor `S1459 ~T0 @X0 1 a ]
-"60
-[; ;mcc_generated_files/mcc.c: 60:     MotorInit(&motor, position_steps, 0, 1007, MOTOR_DIR_CW, 0, MV_ABSOLUTE);
-[e ( _MotorInit (4 , , , , , , &U _motor _position_steps -> -> 0 `i `l -> -> -> 1007 `i `l `ul . `E10938 0 -> -> 0 `i `a . `E10942 0 ]
 "61
 [; ;mcc_generated_files/mcc.c: 61: }
 [e :UE 1460 ]

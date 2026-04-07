@@ -17533,18 +17533,19 @@ extern __bank0 __bit __timeout;
 # 55 "mcc_generated_files/nco1.h"
 # 1 "/opt/microchip/xc8/v3.10/pic/include/c99/stdbool.h" 1 3
 # 56 "mcc_generated_files/nco1.h" 2
-
-
-
-
-
-
-
-
-int32_t position_steps;
-# 96 "mcc_generated_files/nco1.h"
+# 93 "mcc_generated_files/nco1.h"
 void NCO1_Initialize(void);
-# 112 "mcc_generated_files/nco1.h"
+# 110 "mcc_generated_files/nco1.h"
+void SetFrequency(uint32_t freq);
+
+uint32_t GetFrequency(void);
+
+void EnStatus(void);
+
+_Bool GetStatus();
+
+void DisStatus(void);
+
 void NCO1_ISR(void);
 # 53 "mcc_generated_files/nco1.c" 2
 # 64 "mcc_generated_files/nco1.c"
@@ -17576,7 +17577,7 @@ void NCO1_Initialize (void)
 
     PIE7bits.NCO1IE = 1;
 
-    position_steps = 0;
+
 }
 
 
@@ -17611,9 +17612,14 @@ _Bool GetStatus()
     return (NCO1CONbits.EN == 0) ? 0 : 1;
 }
 
-void ToggleStatus(void)
+void EnStatus(void)
 {
-    NCO1CONbits.EN = !NCO1CONbits.EN;
+    NCO1CONbits.EN = 1;
+}
+
+void DisStatus(void)
+{
+    NCO1CONbits.EN = 0;
 }
 
 void NCO1_ISR(void)
@@ -17621,5 +17627,6 @@ void NCO1_ISR(void)
 
     PIR7bits.NCO1IF = 0;
 
-    position_steps ++;
+
+
 }

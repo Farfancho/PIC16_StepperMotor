@@ -17732,11 +17732,19 @@ extern void (*TMR1_InterruptHandler)(void);
 void TMR1_DefaultInterruptHandler(void);
 # 57 "mcc_generated_files/mcc.h" 2
 # 1 "mcc_generated_files/nco1.h" 1
-# 64 "mcc_generated_files/nco1.h"
-int32_t position_steps;
-# 96 "mcc_generated_files/nco1.h"
+# 93 "mcc_generated_files/nco1.h"
 void NCO1_Initialize(void);
-# 112 "mcc_generated_files/nco1.h"
+# 110 "mcc_generated_files/nco1.h"
+void SetFrequency(uint32_t freq);
+
+uint32_t GetFrequency(void);
+
+void EnStatus(void);
+
+_Bool GetStatus();
+
+void DisStatus(void);
+
 void NCO1_ISR(void);
 # 58 "mcc_generated_files/mcc.h" 2
 # 1 "mcc_generated_files/eusart1.h" 1
@@ -17830,39 +17838,33 @@ typedef enum{
 typedef struct
 {
     int32_t position_steps;
-    int32_t target_steps;
+    volatile int32_t absolute_position;
+    volatile int32_t target;
     uint32_t step_rate_hz;
     motor_dir_t direction;
-    _Bool moving;
+    volatile _Bool moving;
     movement_type_t movement_type;
 }motor_status_t;
 
-void MotorInit(motor_status_t *motor, int32_t position_steps, int32_t target_steps, uint32_t step_rate_hz, motor_dir_t direction, _Bool moving, movement_type_t movement_type);
+void MotorInit(motor_status_t *motor, int32_t position_steps, int32_t absolute_position, int32_t target_steps, uint32_t step_rate_hz, motor_dir_t direction, _Bool moving, movement_type_t movement_type);
 
-void MotorStart(void);
+void MotorSetMoving(motor_status_t *motor, _Bool moving);
 
 _Bool MotorIsMoving(motor_status_t *motor);
 
 void MotorSetDirection(motor_status_t *motor, motor_dir_t direction);
 
-_Bool Motor_SetStepRateHz(uint32_t step_rate_hz);
+void Motor_SetStepRateHz(motor_status_t *motor, uint32_t freq);
 
+void MotorMoveToSteps(motor_status_t *motor);
 
+void MotorStepISR(motor_status_t *motor);
 
+int32_t MotorGetPositionSteps(motor_status_t *motor);
 
-void MotorMoveToSteps(int32_t target_steps);
+int32_t MotorGetTargetSteps(motor_status_t *motor);
 
-void MotorMoveRelativeSteps(int32_t delta_steps);
-
-void MotorSetCurrentPositionSteps(int32_t position_steps);
-
-
-int32_t MotorGetPositionSteps(void);
-
-
-int32_t MotorGetTargetSteps(void);
-
-void MotorGetStatus(motor_status_t *status);
+void MotorSetTarget(motor_status_t *motor, int32_t target);
 
 void MotorTask(void);
 # 62 "mcc_generated_files/mcc.h" 2
@@ -17885,7 +17887,7 @@ void SYSTEM_Initialize(void)
     EUSART1_Initialize();
     motor_status_t motor;
 
-    MotorInit(&motor, position_steps, 0, 1007, MOTOR_DIR_CW, 0, MV_ABSOLUTE);
+
 }
 
 void OSCILLATOR_Initialize(void)

@@ -61,9 +61,6 @@
 
 #endif
         
-int32_t position_steps;
-
-
 /**
   Section: NCO1 Module APIs
 */
@@ -109,6 +106,17 @@ void NCO1_Initialize(void);
   @Param
     None
 */
+
+void SetFrequency(uint32_t freq);
+
+uint32_t GetFrequency(void);
+
+void EnStatus(void);
+
+bool GetStatus();
+
+void DisStatus(void);
+
 void NCO1_ISR(void);
 
 #ifdef __cplusplus  // Provide C++ Compatibility

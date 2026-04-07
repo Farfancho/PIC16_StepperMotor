@@ -1331,9 +1331,6 @@ Version 4.0 HI-TECH Software Intermediate Code
 "30995
 [; ;/opt/microchip/mplabx/v6.25/packs/Microchip/PIC16F1xxxx_DFP/1.26.410/xc8/pic/include/proc/pic16f18426.h: 30995: __asm("TOSH equ 01FEFh");
 [; <" TOSH equ 01FEFh ;# ">
-"64 ./mcc_generated_files/nco1.h
-[; ;./mcc_generated_files/nco1.h: 64: int32_t position_steps;
-[v _position_steps `l ~T0 @X0 1 e ]
 [v $root$_main `(v ~T0 @X0 0 e ]
 "49 main.c
 [; ;main.c: 49: void main(void)
