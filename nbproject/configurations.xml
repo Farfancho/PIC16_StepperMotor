@@ -42,6 +42,7 @@
         <itemPath>mcc_generated_files/nco1.c</itemPath>
         <itemPath>mcc_generated_files/mcc.c</itemPath>
         <itemPath>mcc_generated_files/motor.c</itemPath>
+        <itemPath>mcc_generated_files/serial.c</itemPath>
       </logicalFolder>
       <itemPath>main.c</itemPath>
     </logicalFolder>
@@ -189,6 +190,9 @@
       <Simulator>
         <property key="W0106_SIM_PERIPH_PARTIAL_SUPPORT" value="report"/>
       </Simulator>
+      <Tool>
+        <property key="W0106_SIM_PERIPH_PARTIAL_SUPPORT" value="report"/>
+      </Tool>
       <XC8-CO>
         <property key="coverage-enable" value=""/>
         <property key="stack-guidance" value="false"/>

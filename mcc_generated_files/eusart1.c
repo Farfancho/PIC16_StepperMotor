@@ -193,15 +193,6 @@ void EUSART1_Write(uint8_t txData)
     PIE3bits.TX1IE = 1;
 }
 
-char getchs(void)
-{
-    return EUSART1_Read();
-}
-
-void putch(char txData)
-{
-    EUSART1_Write(txData);
-}
 
 void EUSART1_Transmit_ISR(void)
 {

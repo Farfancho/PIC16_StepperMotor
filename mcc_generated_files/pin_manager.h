@@ -105,6 +105,26 @@
 #define DIR_SetAnalogMode()      do { ANSELCbits.ANSC1 = 1; } while(0)
 #define DIR_SetDigitalMode()     do { ANSELCbits.ANSC1 = 0; } while(0)
 
+// get/set HOME aliases
+#define HOME_TRIS                 TRISCbits.TRISC2
+#define HOME_LAT                  LATCbits.LATC2
+#define HOME_PORT                 PORTCbits.RC2
+#define HOME_WPU                  WPUCbits.WPUC2
+#define HOME_OD                   ODCONCbits.ODCC2
+#define HOME_ANS                  ANSELCbits.ANSC2
+#define HOME_SetHigh()            do { LATCbits.LATC2 = 1; } while(0)
+#define HOME_SetLow()             do { LATCbits.LATC2 = 0; } while(0)
+#define HOME_Toggle()             do { LATCbits.LATC2 = ~LATCbits.LATC2; } while(0)
+#define HOME_GetValue()           PORTCbits.RC2
+#define HOME_SetDigitalInput()    do { TRISCbits.TRISC2 = 1; } while(0)
+#define HOME_SetDigitalOutput()   do { TRISCbits.TRISC2 = 0; } while(0)
+#define HOME_SetPullup()          do { WPUCbits.WPUC2 = 1; } while(0)
+#define HOME_ResetPullup()        do { WPUCbits.WPUC2 = 0; } while(0)
+#define HOME_SetPushPull()        do { ODCONCbits.ODCC2 = 0; } while(0)
+#define HOME_SetOpenDrain()       do { ODCONCbits.ODCC2 = 1; } while(0)
+#define HOME_SetAnalogMode()      do { ANSELCbits.ANSC2 = 1; } while(0)
+#define HOME_SetDigitalMode()     do { ANSELCbits.ANSC2 = 0; } while(0)
+
 // get/set RC4 procedures
 #define RC4_SetHigh()            do { LATCbits.LATC4 = 1; } while(0)
 #define RC4_SetLow()             do { LATCbits.LATC4 = 0; } while(0)

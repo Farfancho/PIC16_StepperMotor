@@ -139,7 +139,6 @@ void NCO1_ISR(void)
     // Clear the NCO1 interrupt flag
     PIR7bits.NCO1IF = 0;
     
-    //position_steps ++;
     //MotorStepISR(&motor);
 }
 /**

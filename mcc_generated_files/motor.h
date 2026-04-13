@@ -8,7 +8,10 @@ extern "C" {
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "nco1.h"
 
+//falta la reduccion
+    
 typedef enum
 {
     MOTOR_DIR_CW = 0,
@@ -29,6 +32,9 @@ typedef struct
     motor_dir_t direction; 
     volatile bool moving; 
     movement_type_t movement_type;
+    int32_t steps_rev;
+    int32_t reduction;
+    int32_t microstepping;
 }motor_status_t;
 
 void MotorInit(motor_status_t *motor, int32_t position_steps, int32_t absolute_position, int32_t target_steps, uint32_t step_rate_hz, motor_dir_t direction, bool moving, movement_type_t movement_type);
@@ -50,6 +56,10 @@ int32_t MotorGetPositionSteps(motor_status_t *motor);
 int32_t MotorGetTargetSteps(motor_status_t *motor);
 
 void MotorSetTarget(motor_status_t *motor, int32_t target);
+
+int32_t MotorGetStepsPerOutputRevolution(motor_status_t *motor);
+
+void MotorHoming(motor_status_t *motor);
 
 void MotorTask(void);
 

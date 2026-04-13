@@ -9,7 +9,10 @@ void MotorInit(motor_status_t *motor,
         uint32_t step_rate_hz, 
         motor_dir_t direction, 
         bool moving, 
-        movement_type_t movement_type){
+        movement_type_t movement_type,
+        int32_t steps_rev,
+        int32_t reduction,
+        int32_t microstepping){
     motor -> position_steps = position_steps; //creo que no se usa (puede que lo elimine)
     motor -> absolute_position = absolute_position;
     motor -> target = target_steps;
@@ -17,6 +20,9 @@ void MotorInit(motor_status_t *motor,
     motor -> direction = direction;
     motor -> moving = moving;           
     motor -> movement_type = movement_type;
+    motor -> steps_rev = steps_rev; //200 1.8deg
+    motor -> reduction = reduction; //6
+    motor -> microstepping = microstepping;//4
 }
 
 void MotorSetMoving(motor_status_t *motor, bool moving){
@@ -107,11 +113,25 @@ int32_t MotorGetTargetSteps(motor_status_t *motor){
 void MotorSetTarget(motor_status_t *motor, int32_t target){
     if (motor->movement_type == MV_ABSOLUTE)
     {
-        motor->target = target;
+        motor->target = target*MotorGetStepsPerOutputRevolution(motor)/360;
     }
     else
     {
-        motor->target = motor->absolute_position + target;
+        motor->target = motor->absolute_position + target*MotorGetStepsPerOutputRevolution(motor)/360;
     }
     
+}
+
+int32_t MotorGetStepsPerOutputRevolution(motor_status_t *motor){
+    return motor->steps_rev * motor->microstepping * motor->reduction;
+}
+
+void MotorHoming(motor_status_t *motor){
+    MotorSetDirection(motor, MOTOR_DIR_CW);   
+    MotorSetMoving(motor, true);
+
+    while (PORTCbits.RC2 != 0) {}
+    
+    MotorSetMoving(motor, false);
+    motor->absolute_position = 0;
 }
