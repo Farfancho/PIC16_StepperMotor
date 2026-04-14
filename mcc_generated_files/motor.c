@@ -25,6 +25,9 @@ void MotorInit(motor_status_t *motor,
     motor -> microstepping = microstepping;//4
 }
 
+volatile motor_status_t motor_data; //creacion de la variable
+volatile motor_status_t *motor = &motor_data; //puntero a la variable
+
 void MotorSetMoving(motor_status_t *motor, bool moving){
     NCO1CONbits.EN = moving;
     motor -> moving = moving;

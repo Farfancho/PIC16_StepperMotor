@@ -37,6 +37,8 @@ typedef struct
     int32_t microstepping;
 }motor_status_t;
 
+extern volatile motor_status_t *motor;
+
 void MotorInit(motor_status_t *motor,
                int32_t position_steps,
                int32_t absolute_position,
