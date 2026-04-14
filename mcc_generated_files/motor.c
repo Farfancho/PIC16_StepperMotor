@@ -135,3 +135,10 @@ void MotorHoming(motor_status_t *motor){
     MotorSetMoving(motor, false);
     motor->absolute_position = 0;
 }
+
+void MotorEmergencyStop(motor_status_t *motor)
+{
+    motor->target = motor->absolute_position;
+    DisStatus();
+    MotorSetMoving(motor, false);
+}

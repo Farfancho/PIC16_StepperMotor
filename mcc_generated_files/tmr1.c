@@ -50,6 +50,7 @@
 
 #include <xc.h>
 #include "tmr1.h"
+#include "serial.h"
 
 /**
   Section: Global Variables Definitions
@@ -168,11 +169,7 @@ void TMR1_ISR(void)
     PIR4bits.TMR1IF = 0;
     TMR1_WriteTimer(timer1ReloadVal);
 
-//    if(TMR1_InterruptHandler)
-//    {
-//        TMR1_InterruptHandler();
-//    }
-    //manda el dato
+    Serial_Timer100msISR();
 }
 
 

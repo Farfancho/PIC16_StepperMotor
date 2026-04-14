@@ -37,7 +37,17 @@ typedef struct
     int32_t microstepping;
 }motor_status_t;
 
-void MotorInit(motor_status_t *motor, int32_t position_steps, int32_t absolute_position, int32_t target_steps, uint32_t step_rate_hz, motor_dir_t direction, bool moving, movement_type_t movement_type);
+void MotorInit(motor_status_t *motor,
+               int32_t position_steps,
+               int32_t absolute_position,
+               int32_t target_steps,
+               uint32_t step_rate_hz,
+               motor_dir_t direction,
+               bool moving,
+               movement_type_t movement_type,
+               int32_t steps_rev,
+               int32_t reduction,
+               int32_t microstepping);
 
 void MotorSetMoving(motor_status_t *motor, bool moving);
 
@@ -60,6 +70,8 @@ void MotorSetTarget(motor_status_t *motor, int32_t target);
 int32_t MotorGetStepsPerOutputRevolution(motor_status_t *motor);
 
 void MotorHoming(motor_status_t *motor);
+
+void MotorEmergencyStop(motor_status_t *motor);
 
 void MotorTask(void);
 
