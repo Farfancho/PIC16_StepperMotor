@@ -20,7 +20,7 @@ typedef enum
 
 typedef enum{
     MV_ABSOLUTE = 0,
-    MV_Relative
+    MV_RELATIVE
 }movement_type_t;
 
 typedef struct
@@ -39,7 +39,7 @@ typedef struct
 
 extern volatile motor_status_t *motor;
 
-void MotorInit(motor_status_t *motor,
+void MotorInit(volatile motor_status_t *motor,
                int32_t position_steps,
                int32_t absolute_position,
                int32_t target_steps,
@@ -51,29 +51,29 @@ void MotorInit(motor_status_t *motor,
                int32_t reduction,
                int32_t microstepping);
 
-void MotorSetMoving(motor_status_t *motor, bool moving);
+void MotorSetMoving(volatile motor_status_t *motor, bool moving);
 
-bool MotorIsMoving(motor_status_t *motor);
+bool MotorIsMoving(volatile motor_status_t *motor);
 
-void MotorSetDirection(motor_status_t *motor, motor_dir_t direction);
+void MotorSetDirection(volatile motor_status_t *motor, motor_dir_t direction);
 
-void Motor_SetStepRateHz(motor_status_t *motor, uint32_t freq);
+void Motor_SetStepRateHz(volatile motor_status_t *motor, uint32_t freq);
 
-void MotorMoveToSteps(motor_status_t *motor);
+void MotorMoveToSteps(volatile motor_status_t *motor);
 
-void MotorStepISR(motor_status_t *motor);
+void MotorStepISR(volatile motor_status_t *motor);
 
-int32_t MotorGetPositionSteps(motor_status_t *motor);
+int32_t MotorGetPositionSteps(volatile motor_status_t *motor);
 
-int32_t MotorGetTargetSteps(motor_status_t *motor);
+int32_t MotorGetTargetSteps(volatile motor_status_t *motor);
 
-void MotorSetTarget(motor_status_t *motor, int32_t target);
+void MotorSetTarget(volatile motor_status_t *motor, int32_t target);
 
-int32_t MotorGetStepsPerOutputRevolution(motor_status_t *motor);
+int32_t MotorGetStepsPerOutputRevolution(volatile motor_status_t *motor);
 
-void MotorHoming(motor_status_t *motor);
+void MotorHoming(volatile motor_status_t *motor);
 
-void MotorEmergencyStop(motor_status_t *motor);
+void MotorEmergencyStop(volatile motor_status_t *motor); //creo que todo lo que se use por fuera debe declararse con el volatile 
 
 void MotorTask(void);
 

@@ -23,8 +23,9 @@ typedef enum {
 void Serial_Init(motor_status_t *motor);
 void Serial_Task(void);
 void Serial_Timer100msISR(void);
-int decodeGcode(char *input);
-void SerialSendData(uint16_t value);
+uint16_t decodeGcode(char *input);
+void SerialSendData(int16_t value);
+void Serial_ProcessCommand(char *input);
 
 #ifdef __cplusplus
 }

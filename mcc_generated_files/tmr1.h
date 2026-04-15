@@ -53,6 +53,9 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#include "serial.h"
+#include "motor.h"
+
 
 #ifdef __cplusplus  // Provide C++ Compatibility
 

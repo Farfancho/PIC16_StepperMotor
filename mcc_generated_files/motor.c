@@ -2,7 +2,7 @@
 
 #include "motor.h"
 
-void MotorInit(motor_status_t *motor,
+void MotorInit(volatile motor_status_t *motor,
         int32_t position_steps, 
         int32_t absolute_position, 
         int32_t target_steps, 
@@ -28,21 +28,21 @@ void MotorInit(motor_status_t *motor,
 volatile motor_status_t motor_data; //creacion de la variable
 volatile motor_status_t *motor = &motor_data; //puntero a la variable
 
-void MotorSetMoving(motor_status_t *motor, bool moving){
+void MotorSetMoving(volatile motor_status_t *motor, bool moving){
     NCO1CONbits.EN = moving;
     motor -> moving = moving;
 }
 
-bool MotorIsMoving(motor_status_t *motor){
+bool MotorIsMoving(volatile motor_status_t *motor){
     return motor -> moving;
 }
 
-void MotorSetDirection(motor_status_t *motor, motor_dir_t direction){
+void MotorSetDirection(volatile motor_status_t *motor, motor_dir_t direction){
     LATCbits.LATC1 = (direction == MOTOR_DIR_CCW) ? 1u : 0u; //esto deja que explicitamente se pueda asignar 0 o 1 a la direccion, aunque sea un enum
     motor -> direction = direction;
 }
 
-void Motor_SetStepRateHz(motor_status_t *motor, uint32_t freq){
+void Motor_SetStepRateHz(volatile motor_status_t *motor, uint32_t freq){
     SetFrequency(freq);
     motor->step_rate_hz = freq;
 }
@@ -59,7 +59,7 @@ void MotorMoveRelativeSteps(motor_status_t *motor){
 }
 */
 
-void MotorMoveToSteps(motor_status_t *motor){
+void MotorMoveToSteps(volatile motor_status_t *motor){
     int32_t deltaSteps;
     deltaSteps = motor->target - motor->absolute_position;
     if (deltaSteps > 0)
@@ -81,7 +81,7 @@ void MotorMoveToSteps(motor_status_t *motor){
     }    
 }
 
-void MotorStepISR(motor_status_t *motor){
+void MotorStepISR(volatile motor_status_t *motor){
     if (motor == NULL) return;
     if (!motor->moving) return;
 
@@ -102,18 +102,18 @@ void MotorStepISR(motor_status_t *motor){
     }
 }
 
-int32_t MotorGetPositionSteps(motor_status_t *motor){
+int32_t MotorGetPositionSteps(volatile motor_status_t *motor){
     return motor->absolute_position;
 }
 
-int32_t MotorGetTargetSteps(motor_status_t *motor){
+int32_t MotorGetTargetSteps(volatile motor_status_t *motor){
     return motor->target;
 }
 
 //necesito una funcion para asignar el target, si es absoluto, ponerlo directamente, y si es reativo sumarlo a la posicion absoluta.
 //lo que hago es convertirlo siempre a absoluto (dado que guarda el cero y evita hacer mas funciones repetidas)
 
-void MotorSetTarget(motor_status_t *motor, int32_t target){
+void MotorSetTarget(volatile motor_status_t *motor, int32_t target){
     if (motor->movement_type == MV_ABSOLUTE)
     {
         motor->target = target*MotorGetStepsPerOutputRevolution(motor)/360;
@@ -125,11 +125,11 @@ void MotorSetTarget(motor_status_t *motor, int32_t target){
     
 }
 
-int32_t MotorGetStepsPerOutputRevolution(motor_status_t *motor){
+int32_t MotorGetStepsPerOutputRevolution(volatile motor_status_t *motor){
     return motor->steps_rev * motor->microstepping * motor->reduction;
 }
 
-void MotorHoming(motor_status_t *motor){
+void MotorHoming(volatile motor_status_t *motor){
     MotorSetDirection(motor, MOTOR_DIR_CW);   
     MotorSetMoving(motor, true);
 
@@ -139,7 +139,7 @@ void MotorHoming(motor_status_t *motor){
     motor->absolute_position = 0;
 }
 
-void MotorEmergencyStop(motor_status_t *motor)
+void MotorEmergencyStop(volatile motor_status_t *motor)
 {
     motor->target = motor->absolute_position;
     DisStatus();

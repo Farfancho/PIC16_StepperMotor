@@ -2,9 +2,10 @@
 
 #include "serial.h"
 
-volatile uint16_t debug_value = 0;
+char rx_buffer[32];
+uint8_t rx_index = 0;
 
-int decodeGcode(char *input) {
+uint16_t decodeGcode(char *input) {
     if (strncmp(input, "S", 1) == 0) return CMD_S;
     if (strncmp(input, "R", 1) == 0) return CMD_R;
     if (strncmp(input, "F", 1) == 0) return CMD_F;
@@ -12,49 +13,80 @@ int decodeGcode(char *input) {
     return CMD_NONE;
 }
 
-void SerialSendData(uint16_t value){//sends Uint16 data
+void SerialSendData(int16_t value){//sends int16 data
     while (!EUSART1_is_tx_ready());
-    EUSART1_Write((uint8_t)(value & 0xFF));        // byte bajo
+    EUSART1_Write((uint8_t)(value & 0xFF));
 
     while (!EUSART1_is_tx_ready());
-    EUSART1_Write((uint8_t)((value >> 8) & 0xFF)); // byte alto
+    EUSART1_Write((uint8_t)((value >> 8) & 0xFF));
 }
 
 void Serial_Timer100msISR(void){
-//    static uint16_t x = 0;
+//    static uint16_t x = 0; //debug
 //    x += 100;
 //    SerialSendData(x);
-    SerialSendData(1000);
-    STEP_Toggle();
+    SerialSendData(motor->absolute_position);
+    //SerialSendData(-10);
 }
 
 void Serial_ProcessCommand(char *input)
 {
-    int cmd;
+    int16_t cmd;
+    int32_t value = 0;
+
     cmd = decodeGcode(input);
 
-    switch (cmd){
+    switch (cmd)
+    {
         case CMD_S:
-            debug_value = 1000;
+            MotorEmergencyStop(motor);
             break;
 
         case CMD_R:
-            debug_value = 2000;
+            // movimiento relativo en grados, por ejemplo: R90 o R-45
+            value = atoi(&input[1]);
+            motor->movement_type = MV_RELATIVE;
+            MotorSetTarget((motor_status_t *)motor, value);
+            MotorMoveToSteps((motor_status_t *)motor);
             break;
 
         case CMD_F:
-            debug_value = 3000;
+            // cambio de frecuencia, por ejemplo: F1200
+            value = atoi(&input[1]);
+            Motor_SetStepRateHz((motor_status_t *)motor, (uint32_t)value);
             break;
 
         case CMD_M:
-            debug_value = 4000;
+            // movimiento absoluto en grados, por ejemplo: M180
+            value = atoi(&input[1]);
+            motor->movement_type = MV_ABSOLUTE;
+            MotorSetTarget((motor_status_t *)motor, value);
+            MotorMoveToSteps((motor_status_t *)motor);
             break;
 
         case CMD_NONE:
         default:
-            debug_value = 0;
             break;
     }
 }
 
+void Serial_Task(void)
+{
+    char c;
 
+    if (PIR3bits.RC1IF)
+    {
+        c = EUSART1_Read();
+
+        if (c == '\n')
+        {
+            rx_buffer[rx_index] = '\0';
+            Serial_ProcessCommand(rx_buffer);
+            rx_index = 0;
+        }
+        else if (rx_index < sizeof(rx_buffer) - 1)
+        {
+            rx_buffer[rx_index++] = c;
+        }
+    }
+}

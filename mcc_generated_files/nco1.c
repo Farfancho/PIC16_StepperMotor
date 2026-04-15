@@ -52,7 +52,7 @@
 #include "nco1.h"
 
 #ifndef _XTAL_FREQ
-#define _XTAL_FREQ 32000000UL   // cámbialo por tu FOSC real
+#define _XTAL_FREQ 32000000UL   // c?mbialo por tu FOSC real
 #endif
 
 #define NCO1_CLOCK_HZ   _XTAL_FREQ
@@ -100,7 +100,7 @@ void SetFrequency(uint32_t freq)
 
     if (freq > (NCO1_CLOCK_HZ / 128UL)) {
     freq = NCO1_CLOCK_HZ / 128UL;
-}
+    }
     
     NCO1CONbits.EN = 0;
     uint32_t inc = (uint32_t)(((uint64_t)freq << 20) / NCO1_CLK_HZ);
@@ -139,7 +139,7 @@ void NCO1_ISR(void)
     // Clear the NCO1 interrupt flag
     PIR7bits.NCO1IF = 0;
     
-    //MotorStepISR(&motor);
+    MotorStepISR(motor);
 }
 /**
  End of File

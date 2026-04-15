@@ -50,8 +50,6 @@ void main(void)
 {
     // initialize the device
     SYSTEM_Initialize();
-    
-    
 
     // When using interrupts, you need to set the Global and Peripheral Interrupt Enable bits
     // Use the following macros to:
@@ -69,7 +67,8 @@ void main(void)
     //INTERRUPT_PeripheralInterruptDisable();
 
     while (1)
-    {
+    {   
+        Serial_Task();
         // Add your application code
     }
 }

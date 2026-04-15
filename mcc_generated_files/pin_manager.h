@@ -65,25 +65,17 @@
 #define PULL_UP_ENABLED      1
 #define PULL_UP_DISABLED     0
 
-// get/set STEP aliases
-#define STEP_TRIS                 TRISCbits.TRISC0
-#define STEP_LAT                  LATCbits.LATC0
-#define STEP_PORT                 PORTCbits.RC0
-#define STEP_WPU                  WPUCbits.WPUC0
-#define STEP_OD                   ODCONCbits.ODCC0
-#define STEP_ANS                  ANSELCbits.ANSC0
-#define STEP_SetHigh()            do { LATCbits.LATC0 = 1; } while(0)
-#define STEP_SetLow()             do { LATCbits.LATC0 = 0; } while(0)
-#define STEP_Toggle()             do { LATCbits.LATC0 = ~LATCbits.LATC0; } while(0)
-#define STEP_GetValue()           PORTCbits.RC0
-#define STEP_SetDigitalInput()    do { TRISCbits.TRISC0 = 1; } while(0)
-#define STEP_SetDigitalOutput()   do { TRISCbits.TRISC0 = 0; } while(0)
-#define STEP_SetPullup()          do { WPUCbits.WPUC0 = 1; } while(0)
-#define STEP_ResetPullup()        do { WPUCbits.WPUC0 = 0; } while(0)
-#define STEP_SetPushPull()        do { ODCONCbits.ODCC0 = 0; } while(0)
-#define STEP_SetOpenDrain()       do { ODCONCbits.ODCC0 = 1; } while(0)
-#define STEP_SetAnalogMode()      do { ANSELCbits.ANSC0 = 1; } while(0)
-#define STEP_SetDigitalMode()     do { ANSELCbits.ANSC0 = 0; } while(0)
+// get/set RC0 procedures
+#define RC0_SetHigh()            do { LATCbits.LATC0 = 1; } while(0)
+#define RC0_SetLow()             do { LATCbits.LATC0 = 0; } while(0)
+#define RC0_Toggle()             do { LATCbits.LATC0 = ~LATCbits.LATC0; } while(0)
+#define RC0_GetValue()              PORTCbits.RC0
+#define RC0_SetDigitalInput()    do { TRISCbits.TRISC0 = 1; } while(0)
+#define RC0_SetDigitalOutput()   do { TRISCbits.TRISC0 = 0; } while(0)
+#define RC0_SetPullup()             do { WPUCbits.WPUC0 = 1; } while(0)
+#define RC0_ResetPullup()           do { WPUCbits.WPUC0 = 0; } while(0)
+#define RC0_SetAnalogMode()         do { ANSELCbits.ANSC0 = 1; } while(0)
+#define RC0_SetDigitalMode()        do { ANSELCbits.ANSC0 = 0; } while(0)
 
 // get/set DIR aliases
 #define DIR_TRIS                 TRISCbits.TRISC1

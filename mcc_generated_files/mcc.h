@@ -56,10 +56,8 @@
 #include "tmr1.h"
 #include "nco1.h"
 #include "eusart1.h"
-//#include "./../motor.h"
 #include "serial.h"
 #include "motor.h"
-
 
 
 /**

@@ -50,7 +50,6 @@
 
 #include <xc.h>
 #include "tmr1.h"
-#include "serial.h"
 
 /**
   Section: Global Variables Definitions
@@ -170,6 +169,7 @@ void TMR1_ISR(void)
     TMR1_WriteTimer(timer1ReloadVal);
 
     Serial_Timer100msISR();
+    MotorStepISR(motor);
 }
 
 
