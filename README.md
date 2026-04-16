@@ -5,6 +5,15 @@ Este proyecto implementa un controlador embebido para un motor a pasos basado en
 
 El desarrollo nace en el contexto de una práctica de laboratorio orientada al diseño de un actuador lineal o rotacional controlado por comandos estándar, con reporte de posición en tiempo real.
 
+## Demostración del funcionamiento
+
+A continuación se muestra una demostración del funcionamiento general del sistema:
+
+![Demostración del funcionamiento](img/Functioning.gif  )
+
+Este registro visual permite observar el comportamiento del motor ante los comandos enviados por comunicación serial y verificar la respuesta del sistema durante la ejecución del movimiento.
+
+
 ## Objetivo del proyecto
 Construir un sistema de control de movimiento que permita:
 
@@ -75,6 +84,23 @@ Con señales mínimas:
 
 - `STEP`
 - `DIR`
+
+## Diseño electrónico
+
+Como parte del desarrollo del sistema, se realizó el diseño del hardware de soporte para el microcontrolador y la interfaz con el driver del motor a pasos. A continuación se presentan tanto el esquemático como el diseño de la PCB del sistema implementado.
+
+### Esquemático
+
+![Esquemático del sistema](img/CreeperEsquematico-1.png)
+
+El esquemático incluye la etapa de control basada en el **PIC16F18426**, la configuración de alimentación, la interfaz serial y las señales de control dirigidas al driver del motor.
+
+### PCB
+
+![Diseño de la PCB](img/CreeperPCb-1.png)
+
+La PCB fue diseñada para integrar de manera compacta la etapa de control y facilitar la conexión con el sistema de potencia y el motor. Su diseño busca simplificar pruebas, depuración y futura escalabilidad del sistema.
+
 
 ## Funcionamiento esperado
 1. El usuario envía un comando por puerto serial.
