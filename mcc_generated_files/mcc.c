@@ -56,6 +56,7 @@ void SYSTEM_Initialize(void)
     TMR1_Initialize();
     EUSART1_Initialize();
     MotorInit(motor, 0, 0, 0, 1007, MOTOR_DIR_CW, 0, MV_ABSOLUTE, 200, 6, 4);
+    MotorHoming(motor);
 }
 
 void OSCILLATOR_Initialize(void)

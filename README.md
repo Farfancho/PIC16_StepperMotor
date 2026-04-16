@@ -87,7 +87,7 @@ Esto depende de la implementación final, pero una interfaz mínima podría incl
 
 ```text
 Mxxx\n        ; mover la posicion deseada
-Rxxx\n       ; mover relativamente desde la posicion actual
+Rxxx\n        ; mover relativamente desde la posicion actual
 Fxxx\n        ; fijar la frecuencia (en Hz)
 S\n           ; parada de emergencia
 ```
